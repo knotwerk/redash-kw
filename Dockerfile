@@ -86,6 +86,8 @@ ENV POETRY_VIRTUALENVS_CREATE=false
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
 COPY pyproject.toml poetry.lock ./
+COPY ./knotwerk-docker-config.sh .
+RUN sh ./knotwerk-docker-config.sh
 
 ARG POETRY_OPTIONS="--no-root --no-interaction --no-ansi"
 # for LDAP authentication, install with `ldap3` group

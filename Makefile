@@ -14,7 +14,7 @@ test_db:
 	docker compose exec postgres sh -c 'psql -U postgres -c "drop database if exists tests;" && psql -U postgres -c "create database tests;"'
 
 create_database: .env
-	docker compose run server create_db
+	docker compose run --rm server create_db
 
 clean:
 	docker compose down && docker compose rm
@@ -24,6 +24,11 @@ down:
 
 .env:
 	printf "REDASH_COOKIE_SECRET=`pwgen -1s 32`\nREDASH_SECRET_KEY=`pwgen -1s 32`\n" >> .env
+	aws secretsmanager get-secret-value --secret-id "prod/ingestion" | jq -r ".SecretString" | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" >>.env
+	echo "BRANCH=knotwerk-data" >>.env
+	echo "AWS_ENDPOINT_URL=s3.eu-central-1.amazonaws.com" >>.env
+	echo "AWS_DEFAULT_REGION=eu-central-1" >>.env
+
 
 env: .env
 

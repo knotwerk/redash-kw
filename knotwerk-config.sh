@@ -4,3 +4,5 @@ export CODEARTIFACT_USER=aws
 poetry source add --priority=supplemental knotwerk https://knotwerk-356538622071.d.codeartifact.eu-central-1.amazonaws.com/pypi/Knotwerk/simple
 poetry config repositories.knotwerk $CODEARTIFACT_REPOSITORY_URL
 poetry config http-basic.knotwerk $CODEARTIFACT_USER $CODEARTIFACT_AUTH_TOKEN
+
+echo "/etc/poetry/bin/poetry config http-basic.knotwerk $CODEARTIFACT_USER $CODEARTIFACT_AUTH_TOKEN" > knotwerk-docker-config.sh
